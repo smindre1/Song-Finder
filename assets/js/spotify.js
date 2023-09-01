@@ -1,8 +1,9 @@
 var my_clientID = "6b436b1d69fb4fd4b9257fb9c76549f7";
 var clientSecret = "211deb0626a845768b0b917dec296137";
-
+var authorization = "Basic " + buffer.Buffer.from(my_clientID + ":" + clientSecret).toString("base64");
 let myHeaders = new Headers();
-myHeaders.append("Authorization", `Basic ${my_clientID}:${clientSecret}`);
+// myHeaders.append("Authorization", `Basic ${my_clientID}:${clientSecret}`);
+myHeaders.append("Authorization", authorization);
 myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
 
 var urlencoded = new URLSearchParams();
@@ -20,39 +21,45 @@ const requestOptions = {
 
 fetch("https://accounts.spotify.com/api/token", requestOptions)
   .then(function (res) {
-    console.log(res);
+    // console.log(res);
     return res.json();
   })
   .then(function (res) {
-    console.log(res, res.access_token);
-    // return res.json();
+    console.log(res, res.access_token, "test one");
+    var access_token = res.access_token;
+
+    let myHeaders = new Headers();
+    myHeaders.append("Authorization", `Bearer ${access_token}`);
+
+    const requestOptions = {
+      method: "GET",
+      headers: myHeaders,
+    };
+    //change api endpoint of line 39
+    return fetch("https://api.spotify.com/v1/search?q=artist%3Ajay-z&type=artist", requestOptions);
+  })
+  .then(function (res) {
+    // console.log(res);
+    return res.json();
+  })
+  .then(function (res) {
+    for (i = 0; i < res.artists.limit; i++) {
+      console.log(i, res.artists.items[i].followers, "main test");
+    }
+    console.log(res, "test two");
+    console.log(typeof res.artists.limit, "res length");
+    // //Write code here-Or function
+    // var artist = "beyonce";
+    // var search = "https://api.spotify.com/v1/search/artist:beyonce" + artist;
+
+    // var options = { headers: { Authorization: "Bearer " + res.access_token } };
+
+    // fetch("https://cors-anywhere.herokuapp.com/https://api.spotify.com/v1/search?q=artist%3Abeyonce&type=artist", options).then(function (res) {
+    //   console.log(res.json, "test 3");
+
+    //   //   return res.json();
+    // });
   });
-// res = await res.json();
-// return res.access_token;
 
-// var client_id = "6b436b1d69fb4fd4b9257fb9c76549f7";
-// var client_secret = "211deb0626a845768b0b917dec296137";
-
-// var authOptions = {
-//   url: "https://accounts.spotify.com/api/token",
-//   headers: {
-//     Authorization: "Basic " + new Buffer.from(client_id + ":" + client_secret).toString("base64"),
-//   },
-//   form: {
-//     grant_type: "client_credentials",
-//   },
-//   json: true,
-// };
-
-// request.post(authOptions, function (error, response, body) {
-//   if (!error && response.statusCode === 200) {
-//     var token = body.access_token;
-//     // console.log(token);
-//   }
-// });
-
-// //https://developer.spotify.com/documentation/web-api/tutorials/client-credentials-flow
-
-// // curl -X POST "https://accounts.spotify.com/api/token" \
-// //      -H "Content-Type: application/x-www-form-urlencoded" \
-// //      -d "grant_type=client_credentials&client_id=your-client-id&client_secret=your-client-secret"
+//search artist code
+//https://api.spotify.com/v1/search/artist: + artist
