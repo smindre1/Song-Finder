@@ -1,7 +1,9 @@
 
 var apiKey = 'dd42b88bfa80efe12d3872472298e2c5'; 
 var lyricToSearch = ''; 
-var apiUrl = `https://cors-anywhere.herokuapp.com/https://api.musixmatch.com/ws/1.1/track.search?q_lyrics=${encodeURIComponent(lyricToSearch)}&apikey=${apiKey}`;
+var apiUrl = `https://cors-anywhere.herokuapp.com/https://api.musixmatch.com/ws/1.1/track.search?artist.search?q_artist=jay-z&apikey=${apiKey}`;
+
+// var apiUrl = `https://cors-anywhere.herokuapp.com/https://api.musixmatch.com/ws/1.1/track.search?q_lyrics=${encodeURIComponent(lyricToSearch)}&apikey=${apiKey}`;
 
 var resultsContainer = document.getElementById('results');
 var searchButton = document.getElementById('searchButton');
@@ -32,8 +34,9 @@ searchButton.addEventListener('click', function(){
     fetch(apiUrl)
         .then(response => response.json())
         .then(data => {
-            console.log(data);
-            displayResults(data.message.body.track_list);
+        
+        console.log(data);
+        displayResults(data.message.body.track_list);
         })
 
     console.log('searchButton Clicked!');
