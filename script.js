@@ -1,67 +1,49 @@
-import { searchSoundCloud } from './soundcloud.js';
-import { searchMusixmatchJSONP } from './musixmatch.js';
+// script.js
 
-// Get references to HTML elements
-const queryInput = document.getElementById('query');
-const searchButton = document.getElementById('search-button');
-const soundcloudResultsDiv = document.getElementById('soundcloud-results');
-const musixmatchResultsDiv = document.getElementById('musixmatch-results');
+// Get reference to the playlist link
+const playlistLink = document.querySelector('.playlist-link');
 
-// Event listener for the search button
-searchButton.addEventListener('click', () => {
-    const query = queryInput.value;
-
-    // Perform a SoundCloud API search
-    searchSoundCloud(query);
-
-    // Perform a Musixmatch API search using JSONP
-    searchMusixmatchJSONP(query);
+document.addEventListener('DOMContentLoaded', function() {
+    // Your JavaScript code here, including the event listener setup
+    const searchButton = document.getElementById('search-button');
+    // Add event listener to searchButton
 });
-// soundcloud.js
 
-// Function to search SoundCloud using a server-side proxy
-export function searchSoundCloud(query) {
-    fetch(`/search-soundcloud?q=${encodeURIComponent(query)}`)
-        .then(response => response.json())
-        .then(data => {
-            displaySoundCloudResults(data);
-        })
-        .catch(error => {
-            console.error('SoundCloud API Error:', error);
+// Placeholder function for displaying search results
+function displaySearchResults(results) {
+    // Get the container where you want to display the results
+    const resultsContainer = document.getElementById('musixmatch-results');
+
+    // Clear any previous results
+    resultsContainer.innerHTML = '';
+
+    // Loop through the search results
+    results.forEach(result => {
+        // Create a div to hold each result
+        const resultDiv = document.createElement('div');
+        resultDiv.classList.add('result');
+
+        // Create a paragraph to display the artist's name
+        const artistParagraph = document.createElement('p');
+        artistParagraph.textContent = `Artist: ${result.artist}`;
+
+        // Create a "View Playlist" button
+        const viewPlaylistButton = document.createElement('button');
+        viewPlaylistButton.textContent = 'View Playlist';
+
+        // Add a click event listener to the button to navigate to the playlist page
+        viewPlaylistButton.addEventListener('click', () => {
+            // Replace 'playlist.html' with the actual URL of your playlist page
+            window.location.href = 'playlist.html';
         });
+
+        // Append the artist's name and the "View Playlist" button to the result div
+        resultDiv.appendChild(artistParagraph);
+        resultDiv.appendChild(viewPlaylistButton);
+
+        // Append the result div to the results container
+        resultsContainer.appendChild(resultDiv);
+    });
 }
 
-// Function to display SoundCloud search results
-function displaySoundCloudResults(results) {
-    // Display SoundCloud results in the soundcloudResultsDiv
-    // You can format and style this as needed
-    soundcloudResultsDiv.innerHTML = JSON.stringify(results, null, 2);
-}
-// musixmatch.js
 
-// Function to search Musixmatch using JSONP
-export function searchMusixmatchJSONP(query) {
-    const apiKey = 'YOUR_MUSIXMATCH_API_KEY';
-
-    // Create a script element to load the JSONP data
-    const script = document.createElement('script');
-    script.src = `https://api.musixmatch.com/ws/1.1/track.search?q_lyrics=${encodeURIComponent(query)}&apikey=${apiKey}&callback=handleMusixmatchResponse`;
-
-    // Define the callback function to handle the JSONP response
-    window.handleMusixmatchResponse = function (data) {
-        displayMusixmatchResults(data);
-        // Remove the script element after the data is loaded
-        document.head.removeChild(script);
-        delete window.handleMusixmatchResponse;
-    };
-
-    // Append the script element to the document
-    document.head.appendChild(script);
-}
-
-// Function to display Musixmatch search results
-function displayMusixmatchResults(results) {
-    // Display Musixmatch results in the musixmatchResultsDiv
-    // You can format and style this as needed
-    musixmatchResultsDiv.innerHTML = JSON.stringify(results, null, 2);
-}
