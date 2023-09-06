@@ -19,6 +19,17 @@ const requestOptions = {
   grant_type: "client_credentials",
 };
 
+// $('#artistName', function{
+//   var artist = $('musixArtist').value()
+//   //check artist for spaces and replace with '+'
+//   if(artist.includes(' ') === true){
+//     for(i=0; i < artist.length; i++){
+//       if(artist[i] == ' ') {
+//         artist[i] == '+'
+//       }
+//     }}
+// }).click();
+
 fetch("https://accounts.spotify.com/api/token", requestOptions)
   .then(function (res) {
     // console.log(res);
@@ -39,15 +50,32 @@ fetch("https://accounts.spotify.com/api/token", requestOptions)
     return fetch("https://api.spotify.com/v1/search?q=artist%3Ajay-z&type=artist", requestOptions);
   })
   .then(function (res) {
-    // console.log(res);
+    // console.log(res, "res");
     return res.json();
   })
   .then(function (res) {
+    var artistFollowers = [];
+    var topResults = [];
     for (i = 0; i < res.artists.limit; i++) {
-      console.log(i, res.artists.items[i].followers, "main test");
+      var following = res.artists.items[i].followers.total;
+      artistFollowers.push(following);
     }
+    artistFollowers.sort(function (a, b) {
+      return a - b;
+    });
+    // console.log(artistFollowers, "artistFollowers ordered test");
+    for (i = artistFollowers.length - 1; i > artistFollowers.length - 4; i--) {
+      for (x = 0; x < res.artists.limit; x++) {
+        if (artistFollowers[i] == res.artists.items[x].followers.total) {
+          var data = [{ name: res.artists.items[x].name, sheep: artistFollowers[i], href: res.artists.items[x].external_urls.spotify }];
+          topResults.push(data);
+        }
+      }
+    }
+    console.log(topResults, "topResults");
+
     console.log(res, "test two");
-    console.log(typeof res.artists.limit, "res length");
+    // console.log(typeof res.artists.limit, "res length");
     // //Write code here-Or function
     // var artist = "beyonce";
     // var search = "https://api.spotify.com/v1/search/artist:beyonce" + artist;
