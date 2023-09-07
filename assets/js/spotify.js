@@ -20,12 +20,12 @@ const requestOptions = {
 };
 
 // $('#artistName', function{
-//   var artist = $('musixArtist').value()
+//   var musixMatchArtist = $('musixArtist').value()
 //   //check artist for spaces and replace with '+'
-//   if(artist.includes(' ') === true){
-//     for(i=0; i < artist.length; i++){
-//       if(artist[i] == ' ') {
-//         artist[i] == '+'
+//   if(musixMatchArtist.includes(' ') === true){
+//     for(i=0; i <  musixMatchArtist.length; i++){
+//       if( musixMatchArtist[i] == ' ') {
+//          musixMatchArtist[i] == '+'
 //       }
 //     }}
 // }).click();
@@ -46,14 +46,21 @@ fetch("https://accounts.spotify.com/api/token", requestOptions)
       method: "GET",
       headers: myHeaders,
     };
-    //change api endpoint of line 39
-    return fetch("https://api.spotify.com/v1/search?q=artist%3Ajay-z&type=artist", requestOptions);
+    //change api endpoint
+    var musixMatchArtist = "jay-z";
+    var fetchUrl = "https://api.spotify.com/v1/search?q=artist%3A" + musixMatchArtist + "&type=artist";
+    String(fetchUrl);
+    return fetch(fetchUrl, requestOptions);
+
+    // return fetch("https://api.spotify.com/v1/search?q=artist%3Ajay-z&type=artist", requestOptions);
   })
   .then(function (res) {
     // console.log(res, "res");
     return res.json();
   })
+
   .then(function (res) {
+    // console.log(res);
     var artistFollowers = [];
     var topResults = [];
     for (i = 0; i < res.artists.limit; i++) {
@@ -67,20 +74,15 @@ fetch("https://accounts.spotify.com/api/token", requestOptions)
     for (i = artistFollowers.length - 1; i > artistFollowers.length - 4; i--) {
       for (x = 0; x < res.artists.limit; x++) {
         if (artistFollowers[i] == res.artists.items[x].followers.total) {
-          var data = [{ name: res.artists.items[x].name, sheep: artistFollowers[i], href: res.artists.items[x].external_urls.spotify }];
+          var data = [
+            { name: res.artists.items[x].name, sheep: artistFollowers[i], href: res.artists.items[x].external_urls.spotify, id: res.artists.items[x].id },
+          ];
           topResults.push(data);
         }
       }
     }
     console.log(topResults, "topResults");
-
     console.log(res, "test two");
-    // console.log(typeof res.artists.limit, "res length");
-    // //Write code here-Or function
-    // var artist = "beyonce";
-    // var search = "https://api.spotify.com/v1/search/artist:beyonce" + artist;
-
-    // var options = { headers: { Authorization: "Bearer " + res.access_token } };
 
     // fetch("https://cors-anywhere.herokuapp.com/https://api.spotify.com/v1/search?q=artist%3Abeyonce&type=artist", options).then(function (res) {
     //   console.log(res.json, "test 3");
@@ -89,5 +91,41 @@ fetch("https://accounts.spotify.com/api/token", requestOptions)
     // });
   });
 
-//search artist code
-//https://api.spotify.com/v1/search/artist: + artist
+//offer selected artists playlist
+
+// $('chosenArtistUsernameButton', function{
+fetch("https://accounts.spotify.com/api/token", requestOptions)
+  .then(function (res) {
+    return res.json();
+  })
+  .then(function (res) {
+    // console.log(res, res.access_token, "test one");
+    var access_token = res.access_token;
+
+    let myHeaders = new Headers();
+    myHeaders.append("Authorization", `Bearer ${access_token}`);
+
+    const requestOptions = {
+      method: "GET",
+      headers: myHeaders,
+    };
+    //change artistID to recieve the buttons cooresponding dataset id
+    var artistId = "3nFkdlSjzX9mRTtwJOzDYB";
+
+    var fetchUrl = "https://api.spotify.com/v1/artists/" + artistId + "/albums";
+    String(fetchUrl);
+    return fetch(fetchUrl, requestOptions);
+  })
+  .then(function (res) {
+    // console.log(res, "res");
+    return res.json();
+  })
+  .then(function (res) {
+    console.log(res);
+    //get external_urls, name (of album), release_date, and total_tracks
+    // var albumList = [];
+    // var albums = [{
+    // Repeat lines 74-82 here with new variable names
+    // }]
+  });
+// .click();
