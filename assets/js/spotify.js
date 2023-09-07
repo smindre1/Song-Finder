@@ -129,3 +129,16 @@ fetch("https://accounts.spotify.com/api/token", requestOptions)
     // }]
   });
 // .click();
+
+// change i<10
+// $("#search-button").click(function(){
+// var searchQuery = $("#query").html();
+
+// //musixmatch fetch request
+
+// for(i=0; i<10; i++){
+// var btnIdentifier = "button-" + String(i);
+// var result = $("#musixmatch-results").appendTo("<button></button>").attr("id", btnIdentifier);
+// result.html("Song Title: " + songTitle + " " + "Artist: " + artistName)
+// }
+// })
