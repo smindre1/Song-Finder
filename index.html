@@ -1,18 +1,49 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="./assets/style.css" />
-    <title>Lyrics Search</title>
-  </head>
-  <body>
-    <h1>Lyrics Search</h1>
-    <input type="text" id="searchInput" placeholder="Enter lyrics" />
-    <input type="date" id="dateInput" placeholder="Release Date" />
-    <button id="searchButton">Search</button>
-    <div id="results"></div>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Song Finder</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Pacifico&display=swap">
+    <!-- <link rel="stylesheet"  type="text/css" href="./assets/css/reset.css"> -->
+    <link rel="stylesheet"  type="text/css" href="./assets/css/style.css">
+</head>
+<body>
+    <section id="homepage">
+        <nav class="nav-links">
+            <a href="#" class="nav-link">Home</a>
+            <a href="#" class="nav-link">Feed</a>
+            <a href="#" class="nav-link">Library</a>
+        </nav>
+        <header>
+            <h1> ⚡️ Song Finder ⚡️ </h1>
+        </header>
+        <main>
+            <div class="search-container">
+                <input type="text" id="query" placeholder="Search for a song or artist">
+                <button id="search-button">Search</button>
+              <!--     <input type="date" id="dateInput" placeholder="Release Date" /> -->
+            </div>
 
-    <script src="./assets/script.js"></script>
-  </body>
+            <div id="musixmatch-results">
+                <!-- Musixmatch search results will be displayed here -->
+                <div id="playlist-container">
+                    <button id="view-playlist-button">View Playlist</button>
+                </div>
+            <div id="spotify-results">
+                <!-- Spotify search results will be displayed here -->
+            </div>   
+        </main>
+    </section>
+
+    <!-- <script src="script.js"></script> -->
+    <script src="https://bundle.run/buffer@6.0.3"></script>
+    <script src="./assets/js/spotify.js"></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
+      integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script>
+</body>
 </html>
