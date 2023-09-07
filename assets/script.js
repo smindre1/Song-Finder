@@ -1,9 +1,8 @@
 
 var apiKey = 'dd42b88bfa80efe12d3872472298e2c5'; 
 var lyricToSearch = ''; 
-var apiUrl = `https://cors-anywhere.herokuapp.com/https://api.musixmatch.com/ws/1.1/track.search?artist.search?q_artist=jay-z&apikey=${apiKey}`;
 
-// var apiUrl = `https://cors-anywhere.herokuapp.com/https://api.musixmatch.com/ws/1.1/track.search?q_lyrics=${encodeURIComponent(lyricToSearch)}&apikey=${apiKey}`;
+var apiUrl = `https://cors-anywhere.herokuapp.com/https://api.musixmatch.com/ws/1.1/track.search?q_lyrics=${encodeURIComponent(lyricToSearch)}&apikey=${apiKey}`;
 
 var resultsContainer = document.getElementById('results');
 var searchButton = document.getElementById('searchButton');
@@ -20,15 +19,12 @@ fetch(apiUrl)
 
 console.log("script.js has finished running");
 
-function myFunction(res) {
-  console.log("I'm runnin inside myFunction", res);
-}
 
-myFunction("I am a response!");
 
 searchButton.addEventListener('click', function(){
     var lyricToSearch = document.getElementById('searchInput').value;
-    apiUrl = `https://cors-anywhere.herokuapp.com/https://api.musixmatch.com/ws/1.1/track.search?q_lyrics=${encodeURIComponent(lyricToSearch)}&apikey=${apiKey}`;
+    var releaseDateMin = document.getElementById('dateInput').value;
+    apiUrl = `https://cors-anywhere.herokuapp.com/https://api.musixmatch.com/ws/1.1/track.search?q_lyrics=${encodeURIComponent(lyricToSearch)}&f_track_release_group_first_release_date_min=${releaseDateMin}&apikey=${apiKey}`;
     resultsContainer.innerHTML = '';
 
     fetch(apiUrl)
@@ -44,11 +40,11 @@ searchButton.addEventListener('click', function(){
 
 function displayResults(playList){
     playList.forEach(play => {
-        var trackName = play.track.track_name;
+        
         var artistName = play.track.artist_name;
 
         var playElement = document.createElement('div');
-        playElement.innerHTML = `<p>${trackName} by ${artistName}</p>`;
+        playElement.innerHTML = `${artistName}</p>`;
 
         resultsContainer.appendChild(playElement);
     })
