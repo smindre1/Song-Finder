@@ -130,7 +130,7 @@ fetch("https://accounts.spotify.com/api/token", requestOptions)
   });
 // .click();
 
-// change i<10
+// // change i<10
 // $("#search-button").click(function(){
 // var searchQuery = $("#query").html();
 
@@ -140,5 +140,16 @@ fetch("https://accounts.spotify.com/api/token", requestOptions)
 // var btnIdentifier = "button-" + String(i);
 // var result = $("#musixmatch-results").appendTo("<button></button>").attr("id", btnIdentifier);
 // result.html("Song Title: " + songTitle + " " + "Artist: " + artistName)
-// }
+// };
+// btnEventListeners()
 // })
+
+// function btnEventListeners() {
+// for(i=0; i<10; i++){
+// var btnId = "#button-" + i;
+// $(btnId).click(spotifyAPISearch)
+// }};
+
+// function spotifyAPISearch() {
+//
+// }
