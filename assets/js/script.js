@@ -1,4 +1,4 @@
-// MusixMatch API variables
+// MusixMatch API Variables
 var apiKey = "dd42b88bfa80efe12d3872472298e2c5";
 var lyricToSearch = "";
 
@@ -9,7 +9,30 @@ var apiUrl = `https://cors-anywhere.herokuapp.com/https://api.musixmatch.com/ws/
 var resultsContainer = document.getElementById("musixmatch-results");
 var searchButton = document.getElementById("search-button");
 
-console.log("script.js has finished running");
+// Spotify API Variables
+var my_clientID = "6b436b1d69fb4fd4b9257fb9c76549f7";
+var clientSecret = "211deb0626a845768b0b917dec296137";
+var authorization = "Basic " + buffer.Buffer.from(my_clientID + ":" + clientSecret).toString("base64");
+let myHeaders = new Headers();
+// myHeaders.append("Authorization", `Basic ${my_clientID}:${clientSecret}`);
+myHeaders.append("Authorization", authorization);
+myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
+
+var urlencoded = new URLSearchParams();
+urlencoded.append("grant_type", "client_credentials");
+
+const requestOptions = {
+  method: "POST",
+  headers: myHeaders,
+  body: urlencoded,
+  redirect: "follow",
+  client_id: my_clientID,
+  client_secret: clientSecret,
+  grant_type: "client_credentials",
+};
+////////////
+
+// console.log("script.js has finished running");
 
 searchButton.addEventListener("click", function () {
   fetch(apiUrl)
@@ -30,19 +53,8 @@ searchButton.addEventListener("click", function () {
       displayResults(data.message.body.track_list);
     });
 
-  console.log("searchButton Clicked!");
+  // console.log("searchButton Clicked!");
 });
-
-// function displayResults(playList) {
-//   playList.forEach((play) => {
-//     var artistName = play.track.artist_name;
-//     var trackName = play.track.track_name;
-
-//     var playElement = document.createElement("div");
-//     playElement.innerHTML = `<p>${trackName} by ${artistName}</p>`;
-
-//     resultsContainer.appendChild(playElement);
-//   });
 
 function displayResults(playList) {
   for (i = 0; i < playList.length; i++) {
@@ -50,7 +62,7 @@ function displayResults(playList) {
 
     var artistName = playList[i].track.artist_name;
     var trackName = playList[i].track.track_name;
-    console.log(btnIdentifier, "btn Identifier");
+    // console.log(btnIdentifier, "btn Identifier");
     //attr add button class
     var playElement = $("<button></button>").attr("id", btnIdentifier);
     playElement.attr("artistName", `${artistName}`);
@@ -63,7 +75,79 @@ function displayResults(playList) {
 
 function spotifyAPISearch(event) {
   // console.log(event.target.id);
+  var musixMatchArtist = $(this).attr("artistName");
   console.log($(this).attr("artistName"));
+  console.log(musixMatchArtist.includes(" "), "includes method");
+
+  //check artist for spaces and replace with '+'
+  if (musixMatchArtist.includes(" ") === true) {
+    console.log("if statement works");
+    musixMatchArtist = musixMatchArtist.replaceAll(" ", "+");
+    console.log(musixMatchArtist);
+  }
+  console.log(musixMatchArtist, "fixed");
+
+  //Spotify API fetch
+  fetch("https://accounts.spotify.com/api/token", requestOptions)
+    .then(function (res) {
+      // console.log(res);
+      return res.json();
+    })
+    .then(function (res) {
+      console.log(res, res.access_token, "test one");
+      var access_token = res.access_token;
+
+      let myHeaders = new Headers();
+      myHeaders.append("Authorization", `Bearer ${access_token}`);
+
+      const requestOptions = {
+        method: "GET",
+        headers: myHeaders,
+      };
+      // var fetchUrl = "https://api.spotify.com/v1/search?q=artist%3A" + musixMatchArtist + "&type=artist";
+      var fetchUrl = "https://api.spotify.com/v1/search?q=" + musixMatchArtist + "&type=artist";
+      String(fetchUrl);
+      return fetch(fetchUrl, requestOptions);
+    })
+    .then(function (res) {
+      // console.log(res, "res");
+      return res.json();
+    })
+
+    .then(function (res) {
+      console.log(res);
+      var artistFollowers = [];
+      var topResults = [];
+      console.log(res.artists, "items");
+      console.log(res.artists.items.length, "res.artists.items.length");
+
+      for (i = 0; i < res.artists.items.length; i++) {
+        var following = res.artists.items[i].followers.total;
+        artistFollowers.push(following);
+      }
+      artistFollowers.sort(function (a, b) {
+        return a - b;
+      });
+      // console.log(artistFollowers, "artistFollowers ordered test");
+      for (i = artistFollowers.length - 1; i > artistFollowers.length - 4; i--) {
+        for (x = 0; x < res.artists.items.length; x++) {
+          if (artistFollowers[i] == res.artists.items[x].followers.total) {
+            var data = [
+              { name: res.artists.items[x].name, sheep: artistFollowers[i], href: res.artists.items[x].external_urls.spotify, id: res.artists.items[x].id },
+            ];
+            topResults.push(data);
+          }
+        }
+      }
+      console.log(topResults, "topResults");
+      console.log(res, "test two");
+
+      // fetch("https://cors-anywhere.herokuapp.com/https://api.spotify.com/v1/search?q=artist%3Abeyonce&type=artist", options).then(function (res) {
+      //   console.log(res.json, "test 3");
+
+      //   //   return res.json();
+      // });
+    });
 }
 // for(i=0; i<10; i++){
 

@@ -128,36 +128,8 @@ fetch("https://accounts.spotify.com/api/token", requestOptions)
     // Repeat lines 74-82 here with new variable names
     // }]
   });
-// .click();
-
-// // change i<10
-// $("#search-button").click(function(){
-// var searchQuery = $("#query").html();
-
-// //musixmatch fetch request
-
-// for(i=0; i<10; i++){
-// var btnIdentifier = "button-" + String(i);
-// var result = $("#musixmatch-results").appendTo("<button></button>").attr("id", btnIdentifier);
-// result.html("Song Title: " + songTitle + " " + "Artist: " + artistName)
-// };
-// btnEventListeners()
-// })
-
-// function btnEventListeners() {
-// for(i=0; i<10; i++){
-// var btnId = "#button-" + i;
-// $(btnId).click(spotifyAPISearch)
-// }};
-
-// function spotifyAPISearch() {
-//
-// }
 
 
 
 
-
-
-///////////////////
 
