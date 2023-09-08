@@ -1,41 +1,42 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Song Finder</title>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Pacifico&display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Pacifico&display=swap" />
     <!-- <link rel="stylesheet"  type="text/css" href="./assets/css/reset.css"> -->
-    <link rel="stylesheet"  type="text/css" href="./assets/css/style.css">
-</head>
-<body>
+    <link rel="stylesheet" type="text/css" href="./assets/css/style.css" />
+  </head>
+  <body>
     <section id="homepage">
-        <nav class="nav-links">
-            <a href="#" class="nav-link">Home</a>
-            <a href="#" class="nav-link">Feed</a>
-            <a href="#" class="nav-link">Library</a>
-        </nav>
-        <header>
-            <h1> ⚡️ Song Finder ⚡️ </h1>
-        </header>
-        <main>
-            <div class="search-container">
-                <input type="text" id="query" placeholder="Search for a song or artist">
-                <button id="search-button">Search</button>
-              <!--     <input type="date" id="dateInput" placeholder="Release Date" /> -->
-            </div>
+      <nav class="nav-links">
+        <a href="#" class="nav-link">Home</a>
+        <a href="#" class="nav-link">Feed</a>
+        <a href="#" class="nav-link">Library</a>
+      </nav>
+      <header>
+        <h1>⚡️ Song Finder ⚡️</h1>
+      </header>
+      <main>
+        <div class="search-container">
+          <input type="text" id="query" placeholder="Search for a song or artist" />
+          <button id="search-button">Search</button>
+          <!--     <input type="date" id="dateInput" placeholder="Release Date" /> -->
+        </div>
 
-            <div id="musixmatch-results">
-                <!-- Musixmatch search results will be displayed here -->
-                <div id="playlist-container">
-                    <button id="view-playlist-button">View Playlist</button>
-                </div>
-            <div id="spotify-results">
-                <!-- Spotify search results will be displayed here -->
-            </div>   
-        </main>
+        <div id="musixmatch-results">
+          <!-- Musixmatch search results will be displayed here -->
+          <div id="playlist-container">
+            <button id="view-playlist-button">View Playlist</button>
+          </div>
+        </div>
+        <div id="spotify-results">
+          <!-- Spotify search results will be displayed here -->
+          <p>Placeholder</p>
+        </div>
+      </main>
     </section>
-
 
     <script src="https://bundle.run/buffer@6.0.3"></script>
     <script src="./assets/js/script.js"></script>
@@ -46,5 +47,5 @@
       crossorigin="anonymous"
       referrerpolicy="no-referrer"
     ></script>
-</body>
+  </body>
 </html>
