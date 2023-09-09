@@ -32,15 +32,8 @@ const requestOptions = {
 };
 ////////////
 
-// console.log("script.js has finished running");
-
 searchButton.addEventListener("click", function () {
-  console.log("thing");
   fetch(apiUrl).then((response) => response.json());
-  // .then((data) => {
-  //   // displayResults(data.message.body.track_list);
-  //   console.log(data);
-  // });
 
   var lyricToSearch = document.getElementById("query").value;
   apiUrl = `https://cors-anywhere.herokuapp.com/https://api.musixmatch.com/ws/1.1/track.search?q_lyrics=${encodeURIComponent(lyricToSearch)}&apikey=${apiKey}`;
@@ -52,20 +45,19 @@ searchButton.addEventListener("click", function () {
       console.log(data);
       displayResults(data.message.body.track_list);
     });
-
-  // console.log("searchButton Clicked!");
 });
 
 function displayResults(playList) {
+  // console.log(playList, "playList");
   for (i = 0; i < playList.length; i++) {
     var btnIdentifier = "button-" + String(i);
 
     var artistName = playList[i].track.artist_name;
     var trackName = playList[i].track.track_name;
-    // console.log(btnIdentifier, "btn Identifier");
-    //attr add button class
+
     var playElement = $("<button></button>").attr("id", btnIdentifier);
     playElement.attr("artistName", `${artistName}`);
+    playElement.attr("class", "musixMatchBtns");
 
     playElement.html(`<p>${trackName} by ${artistName}</p>`);
     $("#musixmatch-results").append(playElement);
@@ -74,9 +66,16 @@ function displayResults(playList) {
 }
 
 function spotifyAPISearch(event) {
-  console.log("repeat");
+  $("#spotifyArtists").removeClass("displayNone");
+  for (i = 0; i < 3; i++) {
+    var container = "#spotifyArtists-" + String(i);
+    var container2 = "#spotifyArtistsAlbums-" + String(i);
+    $(container).empty();
+    $(container2).empty();
+  }
+  // $("#spotify-results").empty();
   var musixMatchArtist = $(this).attr("artistName");
-  //check artist name for spaces and replace them with '+'
+  //Checks the artist name for spaces and replaces them with '+'s
   if (musixMatchArtist.includes(" ") === true) {
     musixMatchArtist = musixMatchArtist.replaceAll(" ", "+");
   }
@@ -84,12 +83,9 @@ function spotifyAPISearch(event) {
   //Spotify API fetch
   fetch("https://accounts.spotify.com/api/token", requestOptions)
     .then(function (res) {
-      // console.log(res);
-      console.log("repeat 2");
       return res.json();
     })
     .then(function (res) {
-      console.log("repeat 3");
       // res = res.json();
       console.log(res, res.access_token, "test one");
       var access_token = res.access_token;
@@ -115,9 +111,8 @@ function spotifyAPISearch(event) {
       console.log(res);
       var artistFollowers = [];
       var topResults = [];
-      // console.log(res.artists, "items");
-      // console.log(res.artists.items.length, "res.artists.items.length");
 
+      // Orders the spotify usernames by followers
       for (i = 0; i < res.artists.items.length; i++) {
         var following = res.artists.items[i].followers.total;
         artistFollowers.push(following);
@@ -125,7 +120,7 @@ function spotifyAPISearch(event) {
       artistFollowers.sort(function (a, b) {
         return a - b;
       });
-      // console.log(artistFollowers, "artistFollowers ordered test");
+      // Takes the top three spotify users with the highest follower counts and pushes it into 'topResults'
       for (i = artistFollowers.length - 1; i > artistFollowers.length - 4; i--) {
         for (x = 0; x < res.artists.items.length; x++) {
           if (artistFollowers[i] == res.artists.items[x].followers.total) {
@@ -141,55 +136,86 @@ function spotifyAPISearch(event) {
           }
         }
       }
-      console.log(topResults, "topResults");
-      console.log(topResults[0], "i=0");
-      console.log(topResults[0][0].name, "name");
-      console.log(res, "test two");
-
+      // Creates the Spotify User buttons
       for (i = 0; i < topResults.length; i++) {
-        var btnIdentifier = "spotifyButton-" + String(i);
-
+        var btnIdentifier = "playlistButton-" + String(i);
         var artistName = topResults[i][0].name;
         var followerCount = topResults[i][0].followerCount;
         var externalLink = topResults[i][0].href;
-        // console.log(btnIdentifier, "btn Identifier");
-        //attr add button class
+        var location = "#spotifyArtists-" + String(i);
+        var albumLocation = "#spotifyArtistsAlbums-" + String(i);
+        //attr add button class for css styling
         var playElement = $("<button></button>").attr("id", btnIdentifier);
         playElement.attr("artistName", `${artistName}`);
         playElement.attr("externalLink", `${externalLink}`);
-
-        playElement.html(`<p>Username: ${artistName} Followers: ${followerCount}</p>`);
-        $("#spotify-results").append(playElement);
+        //Add details(albums) under each button
+        var albums = playElement.html(`<p>Username: ${artistName} Followers: ${followerCount}</p>`);
+        //Adds the button to the html
+        $(location).append(playElement);
         $("#" + btnIdentifier).on("click", spotifyUser);
+
+        // console.log(topResults[i][0].id, "topResults[i][0].id");
+        spotifyPlaylist(i, topResults[i][0].id, albumLocation);
       }
-
-      // fetch("https://cors-anywhere.herokuapp.com/https://api.spotify.com/v1/search?q=artist%3Abeyonce&type=artist", options).then(function (res) {
-      //   console.log(res.json, "test 3");
-
-      //   //   return res.json();
-      // });
     });
 }
 
 function spotifyUser() {
+  // Need to make the external url lead to a new page.
   console.log("finished");
 }
 
-// for(i=0; i<10; i++){
+//////
+//offer selected artists playlist
+function spotifyPlaylist(instance, artistId, locationId) {
+  fetch("https://accounts.spotify.com/api/token", requestOptions)
+    .then(function (res) {
+      return res.json();
+    })
+    .then(function (res) {
+      var access_token = res.access_token;
 
-// var btnIdentifier = "button-" + String(i);
-// var result = $("#musixmatch-results").appendTo("<button></button>").attr("id", btnIdentifier);
-// result.html("Song Title: " + songTitle + " " + "Artist: " + artistName)
-// };
-// btnEventListeners()
-// })
+      let myHeaders = new Headers();
+      myHeaders.append("Authorization", `Bearer ${access_token}`);
 
-// function btnEventListeners() {
-// for(i=0; i<10; i++){
-// var btnId = "#button-" + i;
-// $(btnId).click(spotifyAPISearch)
-// }};
+      const requestOptions = {
+        method: "GET",
+        headers: myHeaders,
+      };
+      //change artistID to recieve the buttons cooresponding dataset id
+      // var artistId = "3nFkdlSjzX9mRTtwJOzDYB";
 
-// function spotifyAPISearch() {
-//
-// }
+      var fetchUrl = "https://api.spotify.com/v1/artists/" + artistId + "/albums";
+      String(fetchUrl);
+      return fetch(fetchUrl, requestOptions);
+    })
+    .then(function (res) {
+      // console.log(res, "res");
+      return res.json();
+    })
+    .then(function (res) {
+      console.log(res);
+      /////
+      var listId = "listId-" + String(instance);
+      var list = $("<details><summary>User Albums</summary></details>").attr("id", listId);
+
+      $(locationId).append(list);
+
+      for (i = 0; i < res.items.length; i++) {
+        var albumId = String(instance) + "-albumId-" + String(i);
+
+        var playElement = $("<button></button>").attr("id", albumId);
+        // playElement.attr("artistName", `${res.items[i].names}`);
+        playElement.attr("externalLink", `${res.items[i].external_urls}`);
+        //Add details(albums) under each button
+        var albums = playElement.html(
+          `<p><b>Album Name:</b> ${res.items[i].name}</p><p><b>Album Type:</b> ${res.items[i].type}</p><p><b>Release Date:</b> ${res.items[i].release_date}</p>`
+        );
+        //Adds the button to the html
+        $("#" + listId).append(albums);
+        $("#" + albumId).on("click", spotifyUser);
+      }
+    });
+}
+
+// function resolveAfter2Seconds() { return new Promise((resolve) => { setTimeout(() => { resolve('resolved'); }, 2000); }); }

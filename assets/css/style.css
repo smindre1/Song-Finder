@@ -97,6 +97,10 @@ main {
   display: none;
 }
 
+.musixMatchBtns {
+  display: flex;
+}
+
 /* body {
     display: flex;
     flex-direction: column;
