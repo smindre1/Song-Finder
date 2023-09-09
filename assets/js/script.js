@@ -160,8 +160,10 @@ function spotifyAPISearch(event) {
     });
 }
 
-function spotifyUser() {
+function spotifyUser(event) {
   // Need to make the external url lead to a new page.
+  var externalLink = $(this).attr("externalLink");
+  window.open(externalLink, "_blank");
   console.log("finished");
 }
 
@@ -182,19 +184,15 @@ function spotifyPlaylist(instance, artistId, locationId) {
         method: "GET",
         headers: myHeaders,
       };
-      //change artistID to recieve the buttons cooresponding dataset id
-      // var artistId = "3nFkdlSjzX9mRTtwJOzDYB";
 
       var fetchUrl = "https://api.spotify.com/v1/artists/" + artistId + "/albums";
       String(fetchUrl);
       return fetch(fetchUrl, requestOptions);
     })
     .then(function (res) {
-      // console.log(res, "res");
       return res.json();
     })
     .then(function (res) {
-      console.log(res);
       /////
       var listId = "listId-" + String(instance);
       var list = $("<details><summary>User Albums</summary></details>").attr("id", listId);
@@ -206,7 +204,8 @@ function spotifyPlaylist(instance, artistId, locationId) {
 
         var playElement = $("<button></button>").attr("id", albumId);
         // playElement.attr("artistName", `${res.items[i].names}`);
-        playElement.attr("externalLink", `${res.items[i].external_urls}`);
+        console.log(res.items[i].external_urls.spotify, "res.items[i].external_urls.spotify");
+        playElement.attr("externalLink", `${res.items[i].external_urls.spotify}`);
         //Add details(albums) under each button
         var albums = playElement.html(
           `<p><b>Album Name:</b> ${res.items[i].name}</p><p><b>Album Type:</b> ${res.items[i].type}</p><p><b>Release Date:</b> ${res.items[i].release_date}</p>`
