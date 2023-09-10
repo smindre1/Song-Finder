@@ -42,9 +42,15 @@ searchButton.addEventListener("click", function () {
   fetch(apiUrl)
     .then((response) => response.json())
     .then((data) => {
-      console.log(data);
+      console.log(data, "data");
       displayResults(data.message.body.track_list);
     });
+
+  // fetch(`https://cors-anywhere.herokuapp.com/https://api.musixmatch.com/ws/1.1/track.lyrics.get?track_id=7642935&apikey=${apiKey}`)
+  //   .then((response) => response.json())
+  //   .then((data) => {
+  //     console.log(data, "lyrics");
+  //   });
 });
 
 function displayResults(playList) {
@@ -54,9 +60,11 @@ function displayResults(playList) {
 
     var artistName = playList[i].track.artist_name;
     var trackName = playList[i].track.track_name;
+    var lyricId = playList[i].track.track_id;
 
     var playElement = $("<button></button>").attr("id", btnIdentifier);
     playElement.attr("artistName", `${artistName}`);
+    playElement.attr("lyricId", `${lyricId}`);
     playElement.attr("class", "musixMatchBtns");
 
     playElement.html(`<p>${trackName} by ${artistName}</p>`);
@@ -66,6 +74,18 @@ function displayResults(playList) {
 }
 
 function spotifyAPISearch(event) {
+  //API call to musixMatch for the lyrics of the clicked button
+  var lyricId = $(this).attr("lyricId");
+  var lyricApiUrl = `https://cors-anywhere.herokuapp.com/https://api.musixmatch.com/ws/1.1/track.lyrics.get?track_id=${lyricId}&apikey=${apiKey}`;
+  fetch(lyricApiUrl)
+    .then((response) => response.json())
+    .then((data) => {
+      $("#lyrics").empty();
+      $("#aside").removeClass("displayNone");
+      $("#lyrics").html(data.message.body.lyrics.lyrics_body);
+      console.log(data.message.body.lyrics.lyrics_body, "lyrics");
+    });
+
   $("#spotifyArtists").removeClass("displayNone");
   for (i = 0; i < 3; i++) {
     var container = "#spotifyArtists-" + String(i);
@@ -204,7 +224,7 @@ function spotifyPlaylist(instance, artistId, locationId) {
 
         var playElement = $("<button></button>").attr("id", albumId);
         // playElement.attr("artistName", `${res.items[i].names}`);
-        console.log(res.items[i].external_urls.spotify, "res.items[i].external_urls.spotify");
+        // console.log(res.items[i].external_urls.spotify, "res.items[i].external_urls.spotify");
         playElement.attr("externalLink", `${res.items[i].external_urls.spotify}`);
         //Add details(albums) under each button
         var albums = playElement.html(

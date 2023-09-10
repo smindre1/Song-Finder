@@ -10,14 +10,29 @@
   </head>
   <body>
     <section id="homepage">
-      <nav class="nav-links">
+      <!-- <nav class="nav-links">
         <a href="#" class="nav-link">Home</a>
         <a href="#" class="nav-link">Feed</a>
         <a href="#" class="nav-link">Library</a>
-      </nav>
+      </nav> -->
       <header>
         <h1>⚡️ Song Finder ⚡️</h1>
       </header>
+      <aside id="aside" class="displayNone lyricDisplay">
+        <p><b>Lyrics:</b></p>
+        <p id="lyrics"></p>
+      </aside>
+      <aside class="websiteInstructions">
+        <p><b>Instructions:</b></p>
+        <p class="text">
+          Welcome! Our Song Finder Website is an application designed to help you get a name to any pesky song that has been playing in your head.
+        </p>
+        <p>Simply insert a portion of the lyric into the search bar and we can come up with a list of songs and their artists that include those lyrics.</p>
+        <p>
+          Click one of the song results and we will display a portion of the lyrics and some Spotify User's who could be the artist, along with some of their
+          albums.
+        </p>
+      </aside>
       <main>
         <div class="search-container">
           <input type="text" id="query" placeholder="Search for a song or artist" />
@@ -53,5 +68,6 @@
       crossorigin="anonymous"
       referrerpolicy="no-referrer"
     ></script>
+    <script type="text/javascript" src="http://tracking.musixmatch.com/t1.0/AMa6hJCIEzn1v8RuOP"></script>
   </body>
 </html>

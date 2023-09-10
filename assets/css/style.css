@@ -2,6 +2,9 @@ body {
   font-family: "Pacifico", cursive; /* Use the font name 'Pacifico' */
   /* ... (other styles for the body) */
   background-color: #0f5fff46;
+  margin: 0%;
+  padding: 0%;
+  width: 100%;
 }
 
 /* Navigation styles */
@@ -28,6 +31,7 @@ header {
   color: white;
   text-align: center;
   padding: 10px;
+  margin: 0%;
 }
 
 main {
@@ -128,3 +132,19 @@ main {
 #searchButton:hover {
     background-color: #0056b3;
 } */
+
+.websiteInstructions {
+  float: left;
+  width: 20%;
+  margin: 10px 10px 10px 35px;
+}
+
+.lyricDisplay {
+  float: right;
+  width: 20%;
+  margin: 10px 35px 10px 10px;
+}
+
+.text {
+  margin: 10px 0px 0px 0px;
+}
