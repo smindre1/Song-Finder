@@ -1,98 +1,98 @@
 body {
-    font-family: 'Pacifico', cursive; /* Use the font name 'Pacifico' */
-    /* ... (other styles for the body) */
-    background-color: #0f5fff46;
+  font-family: "Pacifico", cursive; /* Use the font name 'Pacifico' */
+  /* ... (other styles for the body) */
+  background-color: #0f5fff46;
+  margin: 0%;
+  padding: 0%;
+  width: 100%;
 }
 
-/* Navigation styles */
-.nav-links {
-    list-style: none;
-    display: flex;
-    gap: 100px; /* Add spacing between navigation links */
+h1 {
+  font-size: 32px;
 }
 
-.nav-link {
-    text-decoration: none;
-    color: white;
-    font-weight: bold;
-    font-size: 16px;
-    transition: color 0.3s;
+h2 {
+  font-size: 16px;
 }
-
-.nav-link:hover {
-    color: hsl(0, 7%, 3%); /* Red color on hover */
-}
-
 
 header {
-    background-color: hsla(0, 83%, 9%, 0.264);
-    color: white;
-    text-align: center;
-    padding: 10px;
+  background-color: hsla(0, 83%, 9%, 0.264);
+  color: white;
+  text-align: center;
+  padding: 10px;
+  margin: 0%;
 }
 
 main {
-    max-width: 800px;
-    margin: 0 auto;
-    padding: 20px;
-    background-color: #eb151514;
-    border-radius: 5px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: #eb151514;
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
 }
 
 .search-container {
-    display: flex;
-    gap: 10px;
-    margin-bottom: 20px;
-    
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
 }
 
 #lyrics-input {
-    flex: 1;
-    padding: 5px;
-    border: 1px solid #ccc;
-    border-radius: 3px;
+  flex: 1;
+  padding: 5px;
+  border: 1px solid #ccc;
+  border-radius: 3px;
 }
 
 #search-button {
-    background-color: hsl(213, 53%, 3%);
-    color: white;
-    border: none;
-    padding: 5px 10px;
-    cursor: pointer;
-    border-radius: 3px;
-    font-family: 'Pacifico', cursive; /* Use the font name 'Pacifico' */
-    /* ... (other styles for the body) */
+  background-color: hsl(213, 53%, 3%);
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  cursor: pointer;
+  border-radius: 3px;
+  font-family: "Pacifico", cursive; /* Use the font name 'Pacifico' */
+  /* ... (other styles for the body) */
 }
 
 #search-button:hover {
-    background-color: hsl(210, 43%, 3%);
-}
-/* Add this to your style.css to apply display: flex to the playlist section */
-.playlist-section {
-    display: flex; /* Make it a flex container */
-    flex-direction: row; /* Arrange content horizontally (default value) */
-    justify-content: space-between; /* Space items evenly horizontally */
-    align-items: center; /* Center items vertically */
-    margin-top: 20px; /* Add some space at the top */
+  background-color: #0056b3;
 }
 
-/* Style the individual items within the playlist */
-.playlist-item {
-    /* Add styles for each playlist item as needed */
-    margin: 5px; /* Add spacing between items */
-}
-/* Hide the playlist container initially */
-#playlist-container {
-    display: none;
+.displayNone {
+  display: none;
 }
 
+.websiteInstructions {
+  float: left;
+  width: 20%;
+  margin: 10px 10px 10px 35px;
+}
 
+.lyricDisplay {
+  float: right;
+  width: 20%;
+  margin: 10px 35px 10px 10px;
+}
 
-/* Add some color to the results */
-#results {
-    color: #333;
-    background-color: #f9f9f9;
-    padding: 10px;
-    border-radius: 5px;
+.text {
+  margin: 10px 0px 0px 0px;
+}
+
+.musixMatchBtns {
+  display: flex;
+  margin: 5px;
+}
+
+.spotifyUserButtons {
+}
+
+.spotifyArtistPlaylist {
+  margin-top: 20px;
+  margin-bottom: 15px;
+}
+
+.spotifyAlbumButtons {
+  margin: 5px;
 }

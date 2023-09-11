@@ -1,49 +1,65 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Song Finder</title>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Pacifico&display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Pacifico&display=swap" />
     <!-- <link rel="stylesheet"  type="text/css" href="./assets/css/reset.css"> -->
-    <link rel="stylesheet"  type="text/css" href="./assets/css/style.css">
-</head>
-<body>
+    <link rel="stylesheet" type="text/css" href="./assets/css/style.css" />
+  </head>
+  <body>
     <section id="homepage">
-        <nav class="nav-links">
-            <a href="#" class="nav-link">Home</a>
-            <a href="#" class="nav-link">Feed</a>
-            <a href="#" class="nav-link">Library</a>
-        </nav>
-        <header>
-            <h1> ⚡️ Song Finder ⚡️ </h1>
-        </header>
-        <main>
-            <div class="search-container">
-                <input type="text" id="query" placeholder="Search for a song or artist">
-                <button id="search-button">Search</button>
-              <!--     <input type="date" id="dateInput" placeholder="Release Date" /> -->
-            </div>
+      <header>
+        <h1>⚡️ Song Finder ⚡️</h1>
+      </header>
+      <aside id="aside" class="displayNone lyricDisplay">
+        <p><b>Lyrics:</b></p>
+        <p id="lyrics"></p>
+      </aside>
+      <aside class="websiteInstructions">
+        <p><b>Instructions:</b></p>
+        <p class="text">
+          Welcome! Our Song Finder Website is an application designed to help you get a name to any pesky song that has been playing in your head.
+        </p>
+        <p>Simply insert a portion of the lyric into the search bar and we can come up with a list of songs and their artists that include those lyrics.</p>
+        <p>
+          Click one of the song results and we will display a portion of the lyrics and some Spotify User's who could be the artist, along with some of their
+          albums.
+        </p>
+      </aside>
+      <main>
+        <div class="search-container">
+          <input type="text" id="query" placeholder="Search for a song or artist" />
+          <button id="search-button">Search</button>
+          <!--     <input type="date" id="dateInput" placeholder="Release Date" /> -->
+        </div>
 
-            <div id="musixmatch-results">
-                <!-- Musixmatch search results will be displayed here -->
-                <div id="playlist-container">
-                    <button id="view-playlist-button">View Playlist</button>
-                </div>
-            <div id="spotify-results">
-                <!-- Spotify search results will be displayed here -->
-            </div>   
-        </main>
+        <div id="musixmatch-results">
+          <!-- Musixmatch search results will be displayed here -->
+        </div>
+        <h2 id="spotifyArtists" class="displayNone">Artist Results On Spotify:</h2>
+        <div id="spotify-results">
+          <div id="spotifyArtists-0"></div>
+          <div id="spotifyArtistsAlbums-0"></div>
+          <div id="spotifyArtists-1"></div>
+          <div id="spotifyArtistsAlbums-1"></div>
+          <div id="spotifyArtists-2"></div>
+          <div id="spotifyArtistsAlbums-2"></div>
+          <!-- Spotify search results will be displayed here -->
+        </div>
+      </main>
     </section>
 
-    <!-- <script src="script.js"></script> -->
     <script src="https://bundle.run/buffer@6.0.3"></script>
-    <script src="./assets/js/spotify.js"></script>
+    <script src="./assets/js/script.js"></script>
+    <!-- <script src="./assets/js/spotify.js"></script> -->
     <script
       src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
       integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
       crossorigin="anonymous"
       referrerpolicy="no-referrer"
     ></script>
-</body>
+    <script type="text/javascript" src="http://tracking.musixmatch.com/t1.0/AMa6hJCIEzn1v8RuOP"></script>
+  </body>
 </html>
