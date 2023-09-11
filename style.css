@@ -1,6 +1,5 @@
 body {
-    font-family: 'Pacifico', cursive; /* Use the font name 'Pacifico' */
-    /* ... (other styles for the body) */
+    font-family: 'Helvetica', sans-serif;
     background-color: #0f5fff46;
 }
 
@@ -61,8 +60,7 @@ main {
     padding: 5px 10px;
     cursor: pointer;
     border-radius: 3px;
-    font-family: 'Pacifico', cursive; /* Use the font name 'Pacifico' */
-    /* ... (other styles for the body) */
+    font-family: 'Helvetica', sans-serif;
 }
 
 #search-button:hover {
