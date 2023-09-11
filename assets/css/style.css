@@ -7,6 +7,14 @@ body {
   width: 100%;
 }
 
+h1 {
+  font-size: 32px;
+}
+
+h2 {
+  font-size: 16px;
+}
+
 /* Navigation styles */
 .nav-links {
   list-style: none;
@@ -101,10 +109,6 @@ main {
   display: none;
 }
 
-.musixMatchBtns {
-  display: flex;
-}
-
 /* body {
     display: flex;
     flex-direction: column;
@@ -147,4 +151,17 @@ main {
 
 .text {
   margin: 10px 0px 0px 0px;
+}
+
+.musixMatchBtns {
+  display: flex;
+}
+
+.spotifyUserButtons {
+}
+
+.spotifyArtistPlaylist {
+}
+
+.spotifyAlbumButtons {
 }

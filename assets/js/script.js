@@ -1,11 +1,5 @@
 // MusixMatch API Variables
 var apiKey = "dd42b88bfa80efe12d3872472298e2c5";
-var lyricToSearch = "";
-
-var apiUrl = `https://cors-anywhere.herokuapp.com/https://api.musixmatch.com/ws/1.1/track.search?q_lyrics=${encodeURIComponent(
-  lyricToSearch
-)}&apikey=${apiKey}`;
-
 var resultsContainer = document.getElementById("musixmatch-results");
 var searchButton = document.getElementById("search-button");
 
@@ -14,7 +8,6 @@ var my_clientID = "6b436b1d69fb4fd4b9257fb9c76549f7";
 var clientSecret = "211deb0626a845768b0b917dec296137";
 var authorization = "Basic " + buffer.Buffer.from(my_clientID + ":" + clientSecret).toString("base64");
 let myHeaders = new Headers();
-// myHeaders.append("Authorization", `Basic ${my_clientID}:${clientSecret}`);
 myHeaders.append("Authorization", authorization);
 myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
 
@@ -32,49 +25,44 @@ const requestOptions = {
 };
 ////////////
 
+//The search button event listener will fetch MusixMatch API data, and process that data with the displayResults function
 searchButton.addEventListener("click", function () {
-  fetch(apiUrl).then((response) => response.json());
-
   var lyricToSearch = document.getElementById("query").value;
   apiUrl = `https://cors-anywhere.herokuapp.com/https://api.musixmatch.com/ws/1.1/track.search?q_lyrics=${encodeURIComponent(lyricToSearch)}&apikey=${apiKey}`;
-  resultsContainer.innerHTML = "";
-
   fetch(apiUrl)
     .then((response) => response.json())
     .then((data) => {
       console.log(data, "data");
+      resultsContainer.innerHTML = "";
       displayResults(data.message.body.track_list);
     });
-
-  // fetch(`https://cors-anywhere.herokuapp.com/https://api.musixmatch.com/ws/1.1/track.lyrics.get?track_id=7642935&apikey=${apiKey}`)
-  //   .then((response) => response.json())
-  //   .then((data) => {
-  //     console.log(data, "lyrics");
-  //   });
 });
 
+//This function creates a series of buttons for each song/artist that the MusixMatch API thinks is the closest to the user's inputted lyrics
 function displayResults(playList) {
-  // console.log(playList, "playList");
   for (i = 0; i < playList.length; i++) {
+    //Creating and adding attribute identifiers with the data the buttons represent
     var btnIdentifier = "button-" + String(i);
-
     var artistName = playList[i].track.artist_name;
-    var trackName = playList[i].track.track_name;
     var lyricId = playList[i].track.track_id;
-
-    var playElement = $("<button></button>").attr("id", btnIdentifier);
-    playElement.attr("artistName", `${artistName}`);
-    playElement.attr("lyricId", `${lyricId}`);
-    playElement.attr("class", "musixMatchBtns");
-
+    var trackName = playList[i].track.track_name;
+    //Each button being assigned these attributes
+    var playElement = $("<button></button>").attr({
+      id: btnIdentifier,
+      artistName: `${artistName}`,
+      lyricId: `${lyricId}`,
+      class: "musixMatchBtns",
+    });
+    //This is where each button is given unique text and is added into the html
     playElement.html(`<p>${trackName} by ${artistName}</p>`);
     $("#musixmatch-results").append(playElement);
+    //Each button is given an event listener, which calls the spotifyAPISearch function when clicked
     $("#" + btnIdentifier).on("click", spotifyAPISearch);
   }
 }
 
 function spotifyAPISearch(event) {
-  //API call to musixMatch for the lyrics of the clicked button
+  //API fetch request to MusixMatch for the lyrics of the clicked button and displays it in <aside id="lyrics">
   var lyricId = $(this).attr("lyricId");
   var lyricApiUrl = `https://cors-anywhere.herokuapp.com/https://api.musixmatch.com/ws/1.1/track.lyrics.get?track_id=${lyricId}&apikey=${apiKey}`;
   fetch(lyricApiUrl)
@@ -83,9 +71,8 @@ function spotifyAPISearch(event) {
       $("#lyrics").empty();
       $("#aside").removeClass("displayNone");
       $("#lyrics").html(data.message.body.lyrics.lyrics_body);
-      console.log(data.message.body.lyrics.lyrics_body, "lyrics");
     });
-
+  //Reveals and empties any prior content in the Spotify artists section so that it can be filled in
   $("#spotifyArtists").removeClass("displayNone");
   for (i = 0; i < 3; i++) {
     var container = "#spotifyArtists-" + String(i);
@@ -93,46 +80,37 @@ function spotifyAPISearch(event) {
     $(container).empty();
     $(container2).empty();
   }
-  // $("#spotify-results").empty();
+
   var musixMatchArtist = $(this).attr("artistName");
-  //Checks the artist name for spaces and replaces them with '+'s
+  //Checks the artist name for spaces and replaces them with '+'s for the 'fetchUrl'
   if (musixMatchArtist.includes(" ") === true) {
     musixMatchArtist = musixMatchArtist.replaceAll(" ", "+");
   }
 
-  //Spotify API fetch
+  //Spotify API fetch request for Access Token which is needed for GET method fetch requests to Spotify
   fetch("https://accounts.spotify.com/api/token", requestOptions)
+    .then((res) => res.json())
+    //Returns a fetch request for Spotify data on Usernames similar to the selected MusixMatch Artist
     .then(function (res) {
-      return res.json();
-    })
-    .then(function (res) {
-      // res = res.json();
-      console.log(res, res.access_token, "test one");
       var access_token = res.access_token;
-
       let myHeaders = new Headers();
       myHeaders.append("Authorization", `Bearer ${access_token}`);
-
       const requestOptions = {
         method: "GET",
         headers: myHeaders,
       };
-      // var fetchUrl = "https://api.spotify.com/v1/search?q=artist%3A" + musixMatchArtist + "&type=artist";
       var fetchUrl = "https://api.spotify.com/v1/search?q=" + musixMatchArtist + "&type=artist";
       String(fetchUrl);
       return fetch(fetchUrl, requestOptions);
     })
+    .then((res) => res.json())
+    //Orders the Spotify User data and grabs the three most likely to be the MusixMatch artist
     .then(function (res) {
-      // console.log(res, "res");
-      return res.json();
-    })
-
-    .then(function (res) {
-      console.log(res);
+      console.log(res, "res");
       var artistFollowers = [];
       var topResults = [];
 
-      // Orders the spotify usernames by followers
+      //Orders the spotify usernames by followers
       for (i = 0; i < res.artists.items.length; i++) {
         var following = res.artists.items[i].followers.total;
         artistFollowers.push(following);
@@ -140,7 +118,7 @@ function spotifyAPISearch(event) {
       artistFollowers.sort(function (a, b) {
         return a - b;
       });
-      // Takes the top three spotify users with the highest follower counts and pushes it into 'topResults'
+      //Takes the top three spotify users with the highest follower counts and pushes it into 'topResults'
       for (i = artistFollowers.length - 1; i > artistFollowers.length - 4; i--) {
         for (x = 0; x < res.artists.items.length; x++) {
           if (artistFollowers[i] == res.artists.items[x].followers.total) {
@@ -156,7 +134,7 @@ function spotifyAPISearch(event) {
           }
         }
       }
-      // Creates the Spotify User buttons
+      // Creates the Spotify Artist buttons
       for (i = 0; i < topResults.length; i++) {
         var btnIdentifier = "playlistButton-" + String(i);
         var artistName = topResults[i][0].name;
@@ -164,36 +142,28 @@ function spotifyAPISearch(event) {
         var externalLink = topResults[i][0].href;
         var location = "#spotifyArtists-" + String(i);
         var albumLocation = "#spotifyArtistsAlbums-" + String(i);
-        //attr add button class for css styling
-        var playElement = $("<button></button>").attr("id", btnIdentifier);
-        playElement.attr("artistName", `${artistName}`);
-        playElement.attr("externalLink", `${externalLink}`);
-        //Add details(albums) under each button
-        var albums = playElement.html(`<p>Username: ${artistName} Followers: ${followerCount}</p>`);
+        var playElement = $("<button></button>").attr({
+          id: btnIdentifier,
+          artistName: `${artistName}`,
+          externalLink: `${externalLink}`,
+          class: "spotifyUserButtons",
+        });
+        playElement.html(`<p>Username: ${artistName} Followers: ${followerCount}</p>`);
         //Adds the button to the html
         $(location).append(playElement);
-        $("#" + btnIdentifier).on("click", spotifyUser);
-
-        // console.log(topResults[i][0].id, "topResults[i][0].id");
+        $("#" + btnIdentifier).on("click", openNewWindow);
+        //Adds the <details> tag, each with their own list of albums, under each Spotify Artist button
         spotifyPlaylist(i, topResults[i][0].id, albumLocation);
       }
     });
 }
 
-function spotifyUser(event) {
-  // Need to make the external url lead to a new page.
-  var externalLink = $(this).attr("externalLink");
-  window.open(externalLink, "_blank");
-  console.log("finished");
-}
-
-//////
-//offer selected artists playlist
+//Offers selected artist's album playlist
 function spotifyPlaylist(instance, artistId, locationId) {
+  var fetchUrl = "https://api.spotify.com/v1/artists/" + artistId + "/albums";
   fetch("https://accounts.spotify.com/api/token", requestOptions)
-    .then(function (res) {
-      return res.json();
-    })
+    .then((res) => res.json())
+    //Obtains Spotify access token and fetches the album data for a Spotify Artist
     .then(function (res) {
       var access_token = res.access_token;
 
@@ -209,32 +179,31 @@ function spotifyPlaylist(instance, artistId, locationId) {
       String(fetchUrl);
       return fetch(fetchUrl, requestOptions);
     })
+    .then((res) => res.json())
     .then(function (res) {
-      return res.json();
-    })
-    .then(function (res) {
-      /////
+      //Creates and adds the <details> tag that contains a Spotify Artist's album list
       var listId = "listId-" + String(instance);
-      var list = $("<details><summary>User Albums</summary></details>").attr("id", listId);
-
+      var list = $("<details><summary>User Albums</summary></details>").attr({ id: listId, class: "spotifyArtistPlaylist" });
       $(locationId).append(list);
-
+      //Creates and adds each of the Spotify Artist's albums to the <details> tag as a button
       for (i = 0; i < res.items.length; i++) {
         var albumId = String(instance) + "-albumId-" + String(i);
-
         var playElement = $("<button></button>").attr("id", albumId);
-        // playElement.attr("artistName", `${res.items[i].names}`);
-        // console.log(res.items[i].external_urls.spotify, "res.items[i].external_urls.spotify");
-        playElement.attr("externalLink", `${res.items[i].external_urls.spotify}`);
-        //Add details(albums) under each button
+        playElement.attr({ externalLink: `${res.items[i].external_urls.spotify}`, class: "spotifyAlbumButtons" });
         var albums = playElement.html(
           `<p><b>Album Name:</b> ${res.items[i].name}</p><p><b>Album Type:</b> ${res.items[i].type}</p><p><b>Release Date:</b> ${res.items[i].release_date}</p>`
         );
-        //Adds the button to the html
+        //Adds the album button to the html
         $("#" + listId).append(albums);
-        $("#" + albumId).on("click", spotifyUser);
+        //Creates an event listener for the button
+        $("#" + albumId).on("click", openNewWindow);
       }
     });
 }
 
-// function resolveAfter2Seconds() { return new Promise((resolve) => { setTimeout(() => { resolve('resolved'); }, 2000); }); }
+//Searches the button for an externalLink attribute and opens that link in a new tab
+function openNewWindow(event) {
+  var externalLink = $(this).attr("externalLink");
+  window.open(externalLink, "_blank");
+  console.log("finished");
+}
