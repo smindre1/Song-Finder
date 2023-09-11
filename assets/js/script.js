@@ -25,12 +25,18 @@ const requestOptions = {
 };
 ////////////
 
+//This Button will allow the user to activate the MusixMatch API
+var startBtn = document.getElementById("activate-website").addEventListener("click", function () {
+  console.log("works");
+  window.open("https://cors-anywhere.herokuapp.com", "_blank");
+});
+
 //The search button event listener will fetch MusixMatch API data, and process that data with the displayResults function
 searchButton.addEventListener("click", function () {
   var lyricToSearch = document.getElementById("query").value;
   //The herokuapp url was used to allow the api key to work on our local machine
-  // apiUrl = `https://cors-anywhere.herokuapp.com/https://api.musixmatch.com/ws/1.1/track.search?q_lyrics=${encodeURIComponent(lyricToSearch)}&apikey=${apiKey}`;
-  apiUrl = `https://api.musixmatch.com/ws/1.1/track.search?q_lyrics=${encodeURIComponent(lyricToSearch)}&apikey=${apiKey}`;
+  apiUrl = `https://cors-anywhere.herokuapp.com/https://api.musixmatch.com/ws/1.1/track.search?q_lyrics=${encodeURIComponent(lyricToSearch)}&apikey=${apiKey}`;
+  // apiUrl = `https://api.musixmatch.com/ws/1.1/track.search?q_lyrics=${encodeURIComponent(lyricToSearch)}&apikey=${apiKey}`;
   fetch(apiUrl)
     .then((response) => response.json())
     .then((data) => {
@@ -67,8 +73,8 @@ function spotifyAPISearch(event) {
   //API fetch request to MusixMatch for the lyrics of the clicked button and displays it in <aside id="lyrics">
   var lyricId = $(this).attr("lyricId");
   //The herokuapp url was used to allow the api key to work on our local machine
-  // var lyricApiUrl = `https://cors-anywhere.herokuapp.com/https://api.musixmatch.com/ws/1.1/track.lyrics.get?track_id=${lyricId}&apikey=${apiKey}`;
-  var lyricApiUrl = `https://api.musixmatch.com/ws/1.1/track.lyrics.get?track_id=${lyricId}&apikey=${apiKey}`;
+  var lyricApiUrl = `https://cors-anywhere.herokuapp.com/https://api.musixmatch.com/ws/1.1/track.lyrics.get?track_id=${lyricId}&apikey=${apiKey}`;
+  // var lyricApiUrl = `https://api.musixmatch.com/ws/1.1/track.lyrics.get?track_id=${lyricId}&apikey=${apiKey}`;
   fetch(lyricApiUrl)
     .then((response) => response.json())
     .then((data) => {
