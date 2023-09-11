@@ -24,6 +24,14 @@ const requestOptions = {
   grant_type: "client_credentials",
 };
 ////////////
+var lyricToSearch = document.getElementById("query").value;
+apiUrl = `https://api.musixmatch.com/ws/1.1/track.search?q_lyrics=${encodeURIComponent(lyricToSearch)}&apikey=${apiKey}`;
+fetch(apiUrl)
+  .then((response) => response.json())
+  .then((data) => {
+    console.log(data, "data");
+  });
+
 
 //The search button event listener will fetch MusixMatch API data, and process that data with the displayResults function
 searchButton.addEventListener("click", function () {
