@@ -36,7 +36,6 @@ searchButton.addEventListener("click", function () {
   var lyricToSearch = document.getElementById("query").value;
   //The herokuapp url was used to allow the api key to work on our local machine
   apiUrl = `https://cors-anywhere.herokuapp.com/https://api.musixmatch.com/ws/1.1/track.search?q_lyrics=${encodeURIComponent(lyricToSearch)}&apikey=${apiKey}`;
-  // apiUrl = `https://api.musixmatch.com/ws/1.1/track.search?q_lyrics=${encodeURIComponent(lyricToSearch)}&apikey=${apiKey}`;
   fetch(apiUrl)
     .then((response) => response.json())
     .then((data) => {
@@ -74,7 +73,6 @@ function spotifyAPISearch(event) {
   var lyricId = $(this).attr("lyricId");
   //The herokuapp url was used to allow the api key to work on our local machine
   var lyricApiUrl = `https://cors-anywhere.herokuapp.com/https://api.musixmatch.com/ws/1.1/track.lyrics.get?track_id=${lyricId}&apikey=${apiKey}`;
-  // var lyricApiUrl = `https://api.musixmatch.com/ws/1.1/track.lyrics.get?track_id=${lyricId}&apikey=${apiKey}`;
   fetch(lyricApiUrl)
     .then((response) => response.json())
     .then((data) => {
